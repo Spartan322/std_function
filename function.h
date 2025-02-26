@@ -28,10 +28,29 @@ For more information, please refer to <http://unlicense.org/>
 
 
 #pragma once
+
+#ifndef FUNC_NO_EXCEPTIONS
+#if defined(_MSC_VER)
+#if !defined(_HAS_EXCEPTIONS) || (_HAS_EXCEPTIONS == 0)
+#define FUNC_NO_EXCEPTIONS
+#endif
+#elif defined(__clang__)
+#if !(__EXCEPTIONS && __has_feature(cxx_exceptions))
+#define FUNC_NO_EXCEPTIONS
+#endif
+#elif defined(__GNUC__)
+#if !__EXCEPTIONS
+#define FUNC_NO_EXCEPTIONS
+#endif
+#endif
+#endif // FUNC_NO_EXCEPTIONS
+
 #include <utility>
 #include <type_traits>
 #include <functional>
+#ifndef FUNC_NO_EXCEPTIONS
 #include <exception>
+#endif // FUNC_NO_EXCEPTIONS
 #include <typeinfo>
 #include <memory>
 
